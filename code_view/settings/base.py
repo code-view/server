@@ -1,0 +1,3 @@
+REDIS_OPTIONS = {'db': 0}
+TEST_REDIS_OPTIONS = {'db': 0}
+DEBUG = False

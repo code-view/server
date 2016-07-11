@@ -1,0 +1,6 @@
+code_view/settings/local.py
+cache
+.cache
+.idea
+__pycache__/
+*.py[cod]
