@@ -13,7 +13,6 @@ async def debug(app, handler):
                 return response
             except Exception as e:
                 print(request.method, request.path)
-                print(await request.json())
                 raise e
 
         return await handler(request)
