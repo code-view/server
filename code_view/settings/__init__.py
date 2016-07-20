@@ -1,2 +1,7 @@
+from warnings import warn
 from .base import *
-from .local import *
+
+try:
+    from .local import *
+except ImportError:
+    warn('Default config used.')
