@@ -1,22 +1,33 @@
+from asyncio import set_event_loop
+
 import pytest
-from asyncio_redis import Connection
+from aiohttp import web
 
 from code_view.db import redis
 from code_view.settings import TEST_REDIS_OPTIONS
+from code_view.router import router
+
+pytest_plugins = 'aiohttp.pytest_plugin'
+
+
+@pytest.yield_fixture(autouse=True)
+def redis_db(loop, monkeypatch):
+    """Use test redis config."""
+    monkeypatch.setattr('code_view.db.REDIS_OPTIONS', TEST_REDIS_OPTIONS)
+    loop.run_until_complete(redis.init())
+    yield
+    loop.run_until_complete(redis.flushdb())
 
 
 @pytest.fixture(autouse=True)
-def redis_db(request, event_loop):
-    async def _clear_db():
-        redis = await init_db()
-        await redis.flushdb()
+def global_loop(loop):
+    set_event_loop(loop)
 
-    @request.addfinalizer
-    def _finalizer():
-        event_loop.run_until_complete(_clear_db())
 
-    async def init_db():
-        redis._connection = await Connection.create(**TEST_REDIS_OPTIONS)
-        return redis._connection
+def _create_app(loop):
+    return web.Application(router=router, loop=loop)
 
-    event_loop.run_until_complete(init_db())
+
+@pytest.fixture
+def client(loop, test_client):
+    return loop.run_until_complete(test_client(_create_app))

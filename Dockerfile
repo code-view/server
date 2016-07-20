@@ -1,6 +1,6 @@
 FROM python:3.5
 
-ENV version 0.1.0
+ENV version 0.1.1
 COPY . /src
 WORKDIR /src
 RUN pip install -r requirements.txt
