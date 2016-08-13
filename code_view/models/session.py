@@ -6,6 +6,7 @@ from .. import db
 # We use camel case here because most client's langs code styles
 # prefer it (java, js).
 _SessionEntity = NamedTuple('Session', [('id', str),
+                                        ('secureToken', str),
                                         ('fileName', Optional[str]),
                                         ('text', Optional[str]),
                                         ('selectionStartLine', Optional[int]),
@@ -28,6 +29,7 @@ class SessionManager:
                      **_) -> 'Session':
         """Create new session instance and save to redis."""
         session = Session(id=uuid4().hex,
+                          secureToken=uuid4().hex,
                           fileName=fileName,
                           text=text,
                           selectionStartLine=selectionStartLine,
@@ -71,6 +73,12 @@ class Session(_SessionEntity):
     @property
     def as_dict(self):
         return self._asdict()
+
+    @property
+    def as_safe_dict(self):
+        data = self.as_dict
+        data.pop('secureToken')
+        return data
 
 
 class Subscription(db.Subscription):

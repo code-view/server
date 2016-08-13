@@ -1,9 +1,8 @@
-import pytest
 from code_view.models.session import Session
 
 
 async def test_save():
-    session = Session('test',
+    session = Session('test', 'test',
                       'test.py',
                       'print 123',
                       10, 11, 12, 13)
@@ -51,3 +50,10 @@ async def test_subscription():
 async def test_as_dict():
     session = await Session.objects.create()
     assert session.as_dict == session._asdict()
+
+
+async def test_as_safe_dict():
+    session = await Session.objects.create()
+    data = session._asdict()
+    data.pop('secureToken')
+    assert session.as_safe_dict == data

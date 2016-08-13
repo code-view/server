@@ -17,6 +17,6 @@ async def subscribe_to_session(request: web.Request) -> web.WebSocketResponse:
     await ws.prepare(request)
 
     async for update in session.subscribe():
-        ws.send_str(json.dumps(update.as_dict))
+        ws.send_str(json.dumps(update.as_safe_dict))
 
     return ws

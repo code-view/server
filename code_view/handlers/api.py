@@ -18,6 +18,9 @@ async def update_session(request: web.Request) -> web.Response:
     if session is None:
         return web.HTTPNotFound()
 
+    if session.secureToken != data['secureToken']:
+        return web.HTTPForbidden()
+
     session = await session.update(**data)
     return web.json_response(session.as_dict)
 
@@ -28,4 +31,4 @@ async def get_session(request: web.Request) -> web.Response:
     if session is None:
         return web.HTTPNotFound()
     else:
-        return web.json_response(session.as_dict)
+        return web.json_response(session.as_safe_dict)

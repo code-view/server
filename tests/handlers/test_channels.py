@@ -26,4 +26,4 @@ class TestSubscribeToSession:
         session = await session.update(fileName='test.py')
         msg = await conn.receive()
 
-        assert msg.json() == session.as_dict
+        assert msg.json() == session.as_safe_dict

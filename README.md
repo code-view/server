@@ -43,6 +43,7 @@ Session object:
 ```
 {
     id: str,
+    secureToken: str,
     fileName: str,
     text: str,
     selectionStartLine: int,
