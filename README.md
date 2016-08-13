@@ -35,5 +35,29 @@ Run server:
 docker run codeview/server
 ```
 
+API
+---
+
+Session object:
+
+```
+{
+    id: str,
+    fileName: str,
+    text: str,
+    selectionStartLine: int,
+    selectionStartColumn: int,
+    selectionEndLine: int,
+    selectionEndColumn: int
+}
+```
+
+Endpoints:
+
+* `POST`:`/api/session/` &ndash; create new streaming session (accepts empty object);
+* `PUT`:`/api/session/{id}/` &ndash; update streaming session;
+* `GET`:`/api/session/{id}/` &ndash; get streaming session;
+* `WS`:`/channel/session/{id}/` &ndash; subscribe to streaming session.
+
 License MIT
 -----------
