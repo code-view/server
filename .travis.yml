@@ -6,5 +6,6 @@ services:
  - redis-server
 install:
  - pip install -Ur requirements.txt
+ - touch code_view/settings/local.py
 script:
  - py.test
